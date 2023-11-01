@@ -8,8 +8,9 @@ const sensorData = [];
 
 // #region WEBSERVER
 // ---------------------------------------
-APP.use("/christmas/kitchen", express.static("../client/kitchen"));
-APP.use("/christmas/outside", express.static("../client/Stands"));
+APP.use("/", express.static("../Frontend"));
+APP.use("/kitchen", express.static("../Frontend/Apps/Kitchen"));
+APP.use("/stands", express.static("../Frontend/Apps/Stands"));
 // ---------------------------------------
 // #endregion
 
