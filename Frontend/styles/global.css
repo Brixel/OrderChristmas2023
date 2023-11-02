@@ -5,6 +5,8 @@
   color: white;
 }
 
-html {
+html,
+body {
   background: #233343;
+  height: 100%;
 }/*# sourceMappingURL=global.css.map */

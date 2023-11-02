@@ -1,6 +1,6 @@
 //#region IMPORTS
 import "../../components/banner/banner.js"
-import "../../components/button/button.js"
+import "../../components/card/card.js"
 //#endregion IMPORTS
 
 
@@ -12,6 +12,10 @@ home_page.innerHTML = /* html */ `
 </style>
 <div id="home">
     <banner-ɮ text="Kerstmart 2023: Home"></banner-ɮ>
+    <div id="cards">
+        <card-ɮ text="Keuken" icon="kitchen.svg"></card-ɮ>
+        <card-ɮ text="Standen" icon="stand.svg"></card-ɮ>
+    </div>
 </div>`;
 //#endregion TEMPLATE
 
