@@ -23,13 +23,13 @@ window.customElements.define('card-ɮ', class extends HTMLElement {
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(card_template.content.cloneNode(true));
 
-        this.$card = this._shadowRoot.querySelector('#card-text');
+        this.$card = this._shadowRoot.querySelector('#card');
+        this.$cardText = this._shadowRoot.querySelector('#card-text');
         this.$image = this._shadowRoot.querySelector('#image');
-
         this.$card.addEventListener('click', () => {
             this.btnPressedEvent = new CustomEvent("btnPress", {
                 detail:{
-                    data:this.$card.value
+                    data:this.$cardText.innerText
                 },
                 bubbles: true,
                 cancelable: false,
@@ -48,7 +48,7 @@ window.customElements.define('card-ɮ', class extends HTMLElement {
         switch (property) {
             case 'text':
                 if (oldValue === newValue) return;
-                this.$card.innerText = newValue;
+                this.$cardText.innerText = newValue;
             break;
             case 'icon':
                 if (oldValue === newValue) return;

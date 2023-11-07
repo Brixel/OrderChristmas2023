@@ -13,31 +13,17 @@ home_page.innerHTML = /* html */ `
 <div id="home">
     <banner-ɮ text="Kerstmart 2023: Home"></banner-ɮ>
     <div id="cards">
-        <card-ɮ origin="homepage" text="Keuken" icon="kitchen.svg"></card-ɮ>
-        <card-ɮ origin="homepage" text="Standen" icon="stand.svg"></card-ɮ>
+        keuken
     </div>
 </div>`;
 //#endregion TEMPLATE
 
 //#region CLASS
-window.customElements.define('home-page-ɮ', class extends HTMLElement {
+window.customElements.define('kitchen-ɮ', class extends HTMLElement {
     constructor() {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(home_page.content.cloneNode(true));
-
-        this._shadowRoot.addEventListener("btnPress",  (e) => {
-            console.log('Capture button pressed');
-            console.log(e.detail.data);
-            switch (e.detail.data) {
-                case 'Keuken':
-                    window.location = '/kitchen'
-                break;
-                case 'Standen':
-                    window.location = '/stands'
-                break;
-            }
-        });
     }
 
     set content(x) {

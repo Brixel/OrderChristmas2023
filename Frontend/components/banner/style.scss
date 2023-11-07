@@ -1,10 +1,12 @@
-#banner{
-    display: flex;
-    flex-direction: row;
-    background-color: black;
+#banner {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  font-family: "Agbalumo", sans-serif;
+  font-size: 1.15em;
 }
-#link{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+#link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
