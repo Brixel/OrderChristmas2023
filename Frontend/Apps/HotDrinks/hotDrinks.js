@@ -8,12 +8,19 @@ import "../../components/card/card.js"
 const home_page = document.createElement('template');
 home_page.innerHTML = /* html */ `
 <style>
-        @import './Apps/Home/style.css';
+        @import './Apps/HotDrinks/style.css';
 </style>
-<div id="home">
-    <banner-ɮ text="Kerstmart 2023: Home"></banner-ɮ>
+<div id="hotDrinks">
+    <banner-ɮ text="Kerstmart 2023: Warme Dranken"></banner-ɮ>
     <div id="cards">
-        Drinks Page
+        <card-ɮ text="Pompoen Soep (Vegan)" icon="kitchen2.svg"></card-ɮ>
+        <card-ɮ text="Ajuin Soep" icon="drink.svg"></card-ɮ>
+        <card-ɮ text="Kaas" icon="food.svg"></card-ɮ>
+        <card-ɮ text="Cake" icon="kitchen2.svg"></card-ɮ>
+        <card-ɮ text="Cecemel" icon="drink.svg"></card-ɮ>
+        <card-ɮ text="Gluhwein" icon="food.svg"></card-ɮ>
+        <card-ɮ text="Koffie" icon="kitchen2.svg"></card-ɮ>
+        <card-ɮ text="Warm Water" icon="drink.svg"></card-ɮ>
     </div>
 </div>`;
 //#endregion TEMPLATE
