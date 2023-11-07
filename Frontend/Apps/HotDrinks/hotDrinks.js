@@ -13,14 +13,14 @@ home_page.innerHTML = /* html */ `
 <div id="hotDrinks">
     <banner-ɮ text="Kerstmart 2023: Warme Dranken"></banner-ɮ>
     <div id="cards">
-        <card-ɮ text="Pompoen Soep (Vegan)" icon="kitchen2.svg"></card-ɮ>
-        <card-ɮ text="Ajuin Soep" icon="drink.svg"></card-ɮ>
-        <card-ɮ text="Kaas" icon="food.svg"></card-ɮ>
-        <card-ɮ text="Cake" icon="kitchen2.svg"></card-ɮ>
-        <card-ɮ text="Cecemel" icon="drink.svg"></card-ɮ>
-        <card-ɮ text="Gluhwein" icon="food.svg"></card-ɮ>
-        <card-ɮ text="Koffie" icon="kitchen2.svg"></card-ɮ>
-        <card-ɮ text="Warm Water" icon="drink.svg"></card-ɮ>
+        <card-ɮ text="Pompoen Soep" icon="soup.svg"></card-ɮ>
+        <card-ɮ text="Ajuin Soep" icon="soup.svg"></card-ɮ>
+        <card-ɮ text="Kaas" icon="cheese.svg"></card-ɮ>
+        <card-ɮ text="Cake" icon="cake.svg"></card-ɮ>
+        <card-ɮ text="Cecemel" icon="cecemel.svg"></card-ɮ>
+        <card-ɮ text="Gluhwein" icon="gluhwein.svg"></card-ɮ>
+        <card-ɮ text="Koffie" icon="coffee.svg"></card-ɮ>
+        <card-ɮ text="Warm Water" icon="kettle.svg"></card-ɮ>
     </div>
 </div>`;
 //#endregion TEMPLATE

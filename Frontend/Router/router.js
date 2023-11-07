@@ -26,8 +26,8 @@ window.customElements.define('router-ɮ', class extends HTMLElement {
 
         this.$homePage = this._shadowRoot.querySelector('#homeComponent');
         this.$kitchenPage = this._shadowRoot.querySelector('#kitchenComponent');
-        this.$foodPage = this._shadowRoot.querySelector('#drinksComponent');
-        this.$drinksPage = this._shadowRoot.querySelector('#foodComponent');
+        this.$drinksPage = this._shadowRoot.querySelector('#drinksComponent');
+        this.$foodPage = this._shadowRoot.querySelector('#foodComponent');
         
         let urlPath = window.location.pathname;
         this.hidePages();

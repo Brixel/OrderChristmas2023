@@ -15,7 +15,7 @@ home_page.innerHTML = /* html */ `
     <div id="cards">
         <card-ɮ text="Keuken" icon="kitchen2.svg"></card-ɮ>
         <card-ɮ text="Warme Dranken" icon="drink.svg"></card-ɮ>
-        <card-ɮ text="Warm Eten" icon="food.svg"></card-ɮ>
+        <card-ɮ text="Warm Eten" icon="hotdog.svg"></card-ɮ>
     </div>
 </div>`;
 //#endregion TEMPLATE
