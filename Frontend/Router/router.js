@@ -1,7 +1,8 @@
 //#region IMPORTS
 import "../../Apps/Home/home.js"
 import "../../Apps/Kitchen/kitchen.js"
-import "../../Apps/Stands/stands.js"
+import "../../Apps/Food/food.js"
+import "../../Apps/HotDrinks/hotDrinks.js"
 //#endregion IMPORTS
 
 
@@ -11,7 +12,8 @@ router.innerHTML = /* html */ `
 <div id="router">
     <home-page-ɮ id='homeComponent'></home-page-ɮ>
     <kitchen-ɮ id='kitchenComponent'></kitchen-ɮ>
-    <stands-ɮ id='standsComponent'></stands-ɮ>
+    <food-ɮ id='foodComponent'></food-ɮ>
+    <hot-drinks-ɮ id='drinksComponent'></hot-drinks-ɮ>
 </div>`;
 //#endregion TEMPLATE
 
@@ -24,7 +26,8 @@ window.customElements.define('router-ɮ', class extends HTMLElement {
 
         this.$homePage = this._shadowRoot.querySelector('#homeComponent');
         this.$kitchenPage = this._shadowRoot.querySelector('#kitchenComponent');
-        this.$standsPage = this._shadowRoot.querySelector('#standsComponent');
+        this.$foodPage = this._shadowRoot.querySelector('#drinksComponent');
+        this.$drinksPage = this._shadowRoot.querySelector('#foodComponent');
         
         let urlPath = window.location.pathname;
         this.hidePages();
@@ -33,8 +36,11 @@ window.customElements.define('router-ɮ', class extends HTMLElement {
             case '/kitchen/':
                 this.$kitchenPage.style.display = "initial";
             break;
-            case '/stands/':
-                this.$standsPage.style.display = "initial";
+            case '/food/':
+                this.$foodPage.style.display = "initial";
+            break;
+            case '/drinks/':
+                this.$drinksPage.style.display = "initial";
             break;
             default:
                 this.$homePage.style.display = "initial";
@@ -43,9 +49,9 @@ window.customElements.define('router-ɮ', class extends HTMLElement {
     }
 
     hidePages(){
-        console.log("triggered!")
         this.$kitchenPage.style.display = "none";
-        this.$standsPage.style.display = "none";
+        this.$foodPage.style.display = "none";
+        this.$drinksPage.style.display = "none";
         this.$homePage.style.display = "none";
     }
 

@@ -13,12 +13,12 @@ input {
 }
 
 #image {
-  fill: white;
-  max-height: 9rem;
+  max-height: 8.5rem;
   max-width: 9rem;
 }
 
 #card-text {
   font-family: "Agbalumo", sans-serif;
   font-size: 1.5em;
+  margin: 0;
 }/*# sourceMappingURL=style.css.map */

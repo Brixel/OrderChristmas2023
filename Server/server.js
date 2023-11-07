@@ -10,7 +10,8 @@ const sensorData = [];
 // ---------------------------------------
 APP.use("/", express.static("../Frontend"));
 APP.use("/kitchen", express.static("../Frontend"));
-APP.use("/stands", express.static("../Frontend"));
+APP.use("/food", express.static("../Frontend"));
+APP.use("/drinks", express.static("../Frontend"));
 // ---------------------------------------
 // #endregion
 
