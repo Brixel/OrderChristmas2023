@@ -1,118 +1,117 @@
-const X = require('express');
-const GO = X.Router();
-const { MongoClient } = require("mongodb");
-const URI = "mongodb://127.0.0.1/";
-const CLIENT = new MongoClient(URI);
-const DB = CLIENT.db('swarmiot').collection('JaarmarktLora2023');
+// mongo.js
 
-//#region // WORKER METHODS //
-const testConnection = async () => {
-    await CLIENT.connect();
-    await CLIENT.db("admin").command({ ping: 1 }); // might fix client not connected bug
-    return "Service is alive";
-}
+import express from "express";
+import { MongoClient } from "mongodb";
 
-const findEntries = async () => {
-    await CLIENT.connect();
-    await CLIENT.db("admin").command({ ping: 1 });
-    const findResult = await DB.find({ "machine-id": { "$exists": true } }).toArray();
-    return findResult;
-}
+const router = express.Router();
 
-const findEntry = async () => {
-    await CLIENT.connect();
-    await CLIENT.db("admin").command({ ping: 1 });
-    let data = [];
-    let nodes = await DB.distinct('machine-id');
-    for (let i = 0; i < nodes.length; i++) {
-       const iotNodeResult = await DB.find({ "machine-id": nodes[i] }).limit(1).sort({ $natural: -1 }).toArray();
-       await data.push(iotNodeResult); 
+// Connection URI to your MongoDB database
+const uri = "mongodb://127.0.0.1/brixel";
+
+// route to fetch all consumable items from MongoDB
+router.get("/Consumables", async (req, res) => {
+  try {
+    // Connect to the MongoDB server
+    const client = new MongoClient(uri);
+    await client.connect();
+
+    // Access your database and collection
+    const database = client.db();
+    const collection = database.collection("FoodItems2023");
+
+    // Query your collection (replace with your own logic)
+    const data = await collection.find({}).toArray();
+
+    // Close the connection
+    await client.close();
+
+    // Send the data as the response
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from MongoDB:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.post("/Order", async (req, res) => {
+  try {
+    // Get data from the request body (assuming JSON format)
+    const newData = req.body;
+    newData.status = "ordered";
+    newData.startTime = new Date(Date.now());
+    newData.endTime;
+
+    // Connect to the MongoDB server
+    const client = new MongoClient(uri);
+    await client.connect();
+
+    // Access your database and collection
+    const database = client.db();
+    const collection = database.collection("FoodOrders2023");
+
+    // Check if the item already exists based on the 'data' field
+    const existingItem = await collection.findOne({ data: newData.data });
+
+    if (existingItem) {
+      // If the item already exists, check the 'status' property
+      if (existingItem.status === "ordered" || existingItem.status === "busy") {
+        // If the status is 'ordered' or 'busy', don't do anything
+        res.json({ message: "Item already exists and has status ordered or busy, no action taken", existingItem });
+      } else if (existingItem.status === "ready") {
+        const result = await collection.insertOne(newData);
+        // Send the result as the response
+        res.json({ message: "Data added successfully because state was ready", insertedId: result.insertedId });
+      } else {
+        // Handle other status values if needed
+        res.json({ message: "Item already exists but has an unsupported status", existingItem });
+      }
+    } else {
+      // If the item doesn't exist, insert it into the collection
+      const result = await collection.insertOne(newData);
+      // Send the result as the response
+      res.json({ message: "Data added successfully", insertedId: result.insertedId });
     }
 
-    
-    //db.collection.find().limit(1).sort({$natural:-1}) 
-    // const iotNodeResult1 = await DB.find({ "machine-id": "SwarmIOT1" }).limit(1).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult1);
+    // Close the connection
+    await client.close();
+  } catch (error) {
+    console.error("Error adding data to MongoDB:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
-    // const iotNodeResult2 = await DB.find({ "machine-id": "SwarmIOT3" }).limit(1).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult2);
+router.get("/items/ordered", async (req, res) => {
+  try {
+    // Connect to the MongoDB server
+    const client = new MongoClient(uri);
+    await client.connect();
 
-    // const iotNodeResult3 = await DB.find({ "machine-id": "SwarmIOT4" }).limit(1).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult3);
+    const db = client.db();
+    const collection = db.collection("FoodOrders2023");
 
-    return data;
-}
+    const orderedItems = await collection.find({ status: "ordered" }).toArray();
+    console.log(orderedItems);
+    res.json(orderedItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-const findlastHundredEntries = async () => {
-    await CLIENT.connect();
-    await CLIENT.db("admin").command({ ping: 1 });
-    let data = [];
-    let nodes = await DB.distinct('machine-id');
-    for (let i = 0; i < nodes.length; i++) {
-       const iotNodeResult = await DB.find({ "machine-id": nodes[i] }).limit(100).sort({ $natural: -1 }).toArray();
-       await data.push(iotNodeResult); 
-    }
-    //db.collection.find().limit(1).sort({$natural:-1}) 
-    // const iotNodeResult1 = await DB.find({ "machine-id": "SwarmIOT1" }).limit(100).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult1);
+router.get("/items/busy", async (req, res) => {
+  try {
+    // Connect to the MongoDB server
+    const client = new MongoClient(uri);
+    await client.connect();
 
-    // const iotNodeResult2 = await DB.find({ "machine-id": "SwarmIOT3" }).limit(100).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult2);
+    const db = client.db();
+    const collection = db.collection("FoodOrders2023");
 
-    // const iotNodeResult3 = await DB.find({ "machine-id": "SwarmIOT4" }).limit(100).sort({ $natural: -1 }).toArray();
-    // await data.push(iotNodeResult3);
-
-    return data;
-}
-
-const insertEntry = async (value) => {
-    await CLIENT.connect();
-    await CLIENT.db("admin").command({ ping: 1 });
-    const insertResult = await DB.insertMany([value]);
-    return insertResult;
-}
-//#endregion
-
-//#region // ROUTER END POINTS //
-GO.route('/ping')
-    .get((req, res) => {
-        testConnection()
-            .then((x) => {res.send(x)})
-            .catch(console.error)
-            .finally(() => CLIENT.close());
-    })
-
-GO.route('/query/all')
-    .get(X.json(), (req, res) => {
-        findEntries()
-            .then((x) => {res.send(x)})
-            .catch(console.error)
-            .finally(() => CLIENT.close());
-    });
-
-GO.route('/query/last')
-    .get(X.json(), (req, res) => {
-        findEntry()
-            .then((x) => {res.send(x)})
-            .catch(console.error)
-            .finally(() => CLIENT.close());
-    });
-
-GO.route('/query/lastPeriod')
-    .get(X.json(), (req, res) => {
-        findlastHundredEntries()
-            .then((x) => {res.send(x);})
-            .catch(console.error)
-            .finally(() => CLIENT.close());
-    });
-
-GO.route('/insert/')
-    .post(X.json(), (req, res) => {
-        insertEntry(req.body)
-            .then((result) => {res.send(result)})
-            .catch(console.error)
-            .finally(() => CLIENT.close());
-    });
-//#endregion
-
-module.exports = GO;
+    const busyItems = await collection.find({ status: "busy" }).toArray();
+    res.json(busyItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+export default router;

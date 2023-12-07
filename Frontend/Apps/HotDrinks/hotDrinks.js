@@ -3,6 +3,7 @@ import "../../components/banner/banner.js"
 import "../../components/card/card.js"
 //#endregion IMPORTS
 
+const serverIP = 'localhost'
 
 //#region TEMPLATE
 const home_page = document.createElement('template');
@@ -12,16 +13,7 @@ home_page.innerHTML = /* html */ `
 </style>
 <div id="hotDrinks">
     <banner-ɮ text="Kerstmart 2023: Warme Dranken"></banner-ɮ>
-    <div id="cards">
-        <card-ɮ text="Pompoen Soep" icon="soup.svg"></card-ɮ>
-        <card-ɮ text="Ajuin Soep" icon="soup.svg"></card-ɮ>
-        <card-ɮ text="Kaas" icon="cheese.svg"></card-ɮ>
-        <card-ɮ text="Cake" icon="cake.svg"></card-ɮ>
-        <card-ɮ text="Cecemel" icon="cecemel.svg"></card-ɮ>
-        <card-ɮ text="Gluhwein" icon="gluhwein.svg"></card-ɮ>
-        <card-ɮ text="Koffie" icon="coffee.svg"></card-ɮ>
-        <card-ɮ text="Warm Water" icon="kettle.svg"></card-ɮ>
-    </div>
+    <div id="cards"></div>
 </div>`;
 //#endregion TEMPLATE
 
@@ -31,9 +23,39 @@ window.customElements.define('hot-drinks-ɮ', class extends HTMLElement {
         super();
         this._shadowRoot = this.attachShadow({ 'mode': 'open' });
         this._shadowRoot.appendChild(home_page.content.cloneNode(true));
+        this.$cardList = this._shadowRoot.querySelector("#cards");
 
-        this._shadowRoot.addEventListener("btnPress",  (e) => {
-            console.log(e.detail.data);
+        fetch(`http://${serverIP}:2023/mongo/consumables`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+            // console.log(data);
+            data.map(cardItem => {
+                if (cardItem.stand=="drinks") {
+                    const templateString = `<card-ɮ text="${cardItem.cardText}" icon="${cardItem.cardIcon}"></card-ɮ>`
+                    this.$cardList.insertAdjacentHTML('beforeend', templateString);
+                }
+            });
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+
+        this._shadowRoot.addEventListener("btnPress",  async (e) => {
+            console.log(e.detail);
+            const rawResponse = await fetch(`http://${serverIP}:2023/mongo/Order`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(e.detail)
+            });
+            const content = await rawResponse.json();
+            console.log(content);
         });
     }
 
