@@ -9,7 +9,13 @@ section#items {
   justify-content: center;
   column-gap: 2rem;
 }
-
+.menuControl {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 20px;
+  padding-top: 1em;
+}
 .column {
   display: flex;
   flex-direction: column;

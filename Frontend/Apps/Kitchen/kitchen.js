@@ -40,10 +40,10 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
         this.$orderedList = this._shadowRoot.querySelector('#orderedList');
         this.$busyList = this._shadowRoot.querySelector('#busyList');
         this.$readyList = this._shadowRoot.querySelector('#readyList');
-        
-        this.renderData(this.$orderedList,"ordered");
-        this.renderData(this.$busyList,"busy");
-        this.renderData(this.$readyList,"ready");
+
+        this.renderData(this.$orderedList, "ordered");
+        this.renderData(this.$busyList, "busy");
+        this.renderData(this.$readyList, "ready");
         this.refreshScreen();
     }
 
@@ -51,14 +51,14 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
         this.$content.innerHTML = x;
     }
 
-    refreshScreen(){
-        setInterval(()=>{
-            this.$orderedList.innerHTML="";
-            this.$busyList.innerHTML="";
-            this.$readyList.innerHTML="";
-            this.renderData(this.$orderedList,"ordered");
-            this.renderData(this.$busyList,"busy");
-            this.renderData(this.$readyList,"ready");
+    refreshScreen() {
+        setInterval(() => {
+            this.$orderedList.innerHTML = "";
+            this.$busyList.innerHTML = "";
+            this.$readyList.innerHTML = "";
+            this.renderData(this.$orderedList, "ordered");
+            this.renderData(this.$busyList, "busy");
+            this.renderData(this.$readyList, "ready");
         }, 5000000);
     }
     async fetchData(status) {
@@ -71,17 +71,17 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
             console.error("Error fetching data:", error);
         }
     }
-    
-    async renderData(listItem,state) {
+
+    async renderData(listItem, state) {
         const data = await this.fetchData(state)
-            if (data) {
-                data.map(item => {
-                    const time = new Date(item.startTime);
-                    const templateString =`
+        if (data) {
+            data.map(item => {
+                const time = new Date(item.startTime);
+                const templateString = `
                     <div class="item">
                         <div class="itemHeader">
                             <h2>${item.data}</h2>
-                            <div>
+                            <div class="menuControl">
                                 <i id="n${item._id}" class="fas fa-arrow-left"></i>
                                 <i id="p${item._id}" class="fas fa-arrow-right"></i>
                             </div>
@@ -90,10 +90,39 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
                             <p>${time.toLocaleTimeString('nl-BE')}</p>
                         </div>
                     </div>`;
-                    listItem.insertAdjacentHTML("beforeend",templateString);
+                listItem.insertAdjacentHTML("beforeend", templateString);
+                this._shadowRoot.querySelector(`#n${item._id}`).addEventListener('click', async () => {
+                    console.log("n", item);
+                    await this.updateData(item, 'n');
                 });
-            }
+                this._shadowRoot.querySelector(`#p${item._id}`).addEventListener('click', async () => {
+                    console.log("p", item);
+                    await this.updateData(item, 'p');
+                });
+            });
         }
-}
-);
+    }
+
+    async updateData(item, position) {
+        const data = {};
+        data.item = item;
+        data.position = position
+
+        const rawResponse = await fetch(`http://${serverIP}:2023/mongo/move`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const content = await rawResponse.json();
+        this.$orderedList.innerHTML = "";
+        this.$busyList.innerHTML = "";
+        this.$readyList.innerHTML = "";
+        this.renderData(this.$orderedList, "ordered");
+        this.renderData(this.$busyList, "busy");
+        this.renderData(this.$readyList, "ready");
+        console.log(content);
+    }
+});
 //#endregion CLASS
