@@ -3,7 +3,7 @@ import "../../components/banner/banner.js";
 import "../../components/card/card.js";
 //#endregion IMPORTS
 
-const serverIP = '192.168.30.30';
+// const serverIP = '192.168.30.30';
 
 //#region TEMPLATE
 const home_page = document.createElement("template");
@@ -63,7 +63,7 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
     }
     async fetchData(status) {
         try {
-            const response = await fetch(`http://${serverIP}:2023/mongo/items/${status}`);
+            const response = await fetch(`/mongo/items/${status}`);
             const data = await response.json();
             console.log(data);
             return data
@@ -108,7 +108,7 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
         data.item = item;
         data.position = position
 
-        const rawResponse = await fetch(`http://${serverIP}:2023/mongo/move`, {
+        const rawResponse = await fetch(`/mongo/move`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -3,7 +3,7 @@ import "../../components/banner/banner.js"
 import "../../components/card/card.js"
 //#endregion IMPORTS
 
-const serverIP = '192.168.30.30'
+// const serverIP = '192.168.30.30'
 
 //#region TEMPLATE
 const home_page = document.createElement('template');
@@ -25,7 +25,7 @@ window.customElements.define('food-ɮ', class extends HTMLElement {
         this._shadowRoot.appendChild(home_page.content.cloneNode(true));
         this.$cardList = this._shadowRoot.querySelector("#cards");
 
-        fetch(`http://${serverIP}:2023/mongo/consumables`)
+        fetch(`/mongo/consumables`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -47,7 +47,7 @@ window.customElements.define('food-ɮ', class extends HTMLElement {
 
         this._shadowRoot.addEventListener("btnPress", async (e) => {
             console.log(e.detail);
-            const rawResponse = await fetch(`http://${serverIP}:2023/mongo/Order`, {
+            const rawResponse = await fetch(`/mongo/Order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
