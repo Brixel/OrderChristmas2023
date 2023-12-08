@@ -3,7 +3,7 @@ import "../../components/banner/banner.js";
 import "../../components/card/card.js";
 //#endregion IMPORTS
 
-const serverIP = 'localhost';
+const serverIP = '192.168.30.30';
 
 //#region TEMPLATE
 const home_page = document.createElement("template");
@@ -59,7 +59,7 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
             this.renderData(this.$orderedList, "ordered");
             this.renderData(this.$busyList, "busy");
             this.renderData(this.$readyList, "ready");
-        }, 5000000);
+        }, 5000);
     }
     async fetchData(status) {
         try {
