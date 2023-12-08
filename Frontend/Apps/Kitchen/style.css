@@ -16,9 +16,17 @@ section#items {
   flex-direction: column;
 }
 
+.itemHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .item {
+  padding-left: 10px;
+  padding-right: 10px;
   margin-bottom: 1rem;
-  padding: 1rem;
+  width: 250px;
   border: 1px solid #323232;
   background-color: #344b63;
   border-radius: 5px;

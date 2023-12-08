@@ -49,6 +49,9 @@ router.post("/Order", async (req, res) => {
     const database = client.db();
     const collection = database.collection("FoodOrders2023");
 
+    if (newData.data == "Hotdog (vegan)" || newData.data == "Pasta (Vegan)" ) {
+      const result = await collection.insertOne(newData);
+    }
     // Check if the item already exists based on the 'data' field
     const existingItem = await collection.findOne({ data: newData.data });
 
@@ -65,7 +68,8 @@ router.post("/Order", async (req, res) => {
         // Handle other status values if needed
         res.json({ message: "Item already exists but has an unsupported status", existingItem });
       }
-    } else {
+    } 
+    else {
       // If the item doesn't exist, insert it into the collection
       const result = await collection.insertOne(newData);
       // Send the result as the response
@@ -90,7 +94,7 @@ router.get("/items/ordered", async (req, res) => {
     const collection = db.collection("FoodOrders2023");
 
     const orderedItems = await collection.find({ status: "ordered" }).toArray();
-    console.log(orderedItems);
+    // console.log(orderedItems);
     res.json(orderedItems);
   } catch (error) {
     console.error(error);
@@ -108,7 +112,26 @@ router.get("/items/busy", async (req, res) => {
     const collection = db.collection("FoodOrders2023");
 
     const busyItems = await collection.find({ status: "busy" }).toArray();
+    // console.log(orderedItems);
     res.json(busyItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/items/ready", async (req, res) => {
+  try {
+    // Connect to the MongoDB server
+    const client = new MongoClient(uri);
+    await client.connect();
+
+    const db = client.db();
+    const collection = db.collection("FoodOrders2023");
+
+    const readyItems = await collection.find({ status: "ready" }).toArray();
+    console.log(readyItems);
+    res.json(readyItems);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
