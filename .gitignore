@@ -131,4 +131,4 @@ dist
 
 # Local dev files
 .dev/
-./*.tar.gz
+*.tar.gz
