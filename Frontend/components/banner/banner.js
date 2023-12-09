@@ -9,7 +9,7 @@ banner.innerHTML = /* html */ `
 </style>
 <div id="banner">
     <a id="link" href="/">
-        <img id="logo" src="./assets/Big_black.svg" alt="Logo" width="120" height="32">
+        <img id="logo" src="/Assets/Big_black.svg" alt="Logo" width="120" height="32">
     </a>
     <p id="bannerText"></p>
 </div>`;
