@@ -2,6 +2,8 @@ version: "3.8"
 services:
   mongo:
     image: mongo
+    ports:
+      - 27017:27017
     volumes:
       - "./.dev/mongodb:/data/db"
   order:
@@ -10,5 +12,6 @@ services:
       dockerfile: Server.Dockerfile
     ports:
       - 2023:2023
+      - 2024:2024
     environment:
       MONGO_URL: mongodb://mongo/brixel

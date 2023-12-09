@@ -41,10 +41,21 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
         this.$busyList = this._shadowRoot.querySelector('#busyList');
         this.$readyList = this._shadowRoot.querySelector('#readyList');
 
-        this.renderData(this.$orderedList, "ordered");
-        this.renderData(this.$busyList, "busy");
-        this.renderData(this.$readyList, "ready");
-        this.refreshScreen();
+        this._socket = new WebSocket(`ws://${window.location.hostname}:2024`);
+
+        // Connection opened
+        this._socket.addEventListener("open", (event) => {
+            this.refreshScreen();
+            this._socket.send("Hello Server from the kitchen crew!");
+        });
+
+        // Listen for messages
+        this._socket.addEventListener("message", (event) => {
+            if (event.data == "kitchenRefresh") {
+                this.refreshScreen();
+            }
+            console.log("Message from server ", event);
+        });
     }
 
     set content(x) {
@@ -52,14 +63,12 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
     }
 
     refreshScreen() {
-        setInterval(() => {
-            this.$orderedList.innerHTML = "";
-            this.$busyList.innerHTML = "";
-            this.$readyList.innerHTML = "";
-            this.renderData(this.$orderedList, "ordered");
-            this.renderData(this.$busyList, "busy");
-            this.renderData(this.$readyList, "ready");
-        }, 5000);
+        this.$orderedList.innerHTML = "";
+        this.$busyList.innerHTML = "";
+        this.$readyList.innerHTML = "";
+        this.renderData(this.$orderedList, "ordered");
+        this.renderData(this.$busyList, "busy");
+        this.renderData(this.$readyList, "ready");
     }
     async fetchData(status) {
         try {
@@ -73,6 +82,7 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
     }
 
     async renderData(listItem, state) {
+        // socket.send("hi");
         const data = await this.fetchData(state)
         if (data) {
             data.map(item => {
@@ -94,10 +104,12 @@ window.customElements.define("kitchen-ɮ", class extends HTMLElement {
                 this._shadowRoot.querySelector(`#n${item._id}`).addEventListener('click', async () => {
                     console.log("n", item);
                     await this.updateData(item, 'n');
+                    this._socket.send('standNotifier');
                 });
                 this._shadowRoot.querySelector(`#p${item._id}`).addEventListener('click', async () => {
                     console.log("p", item);
                     await this.updateData(item, 'p');
+                    this._socket.send('standNotifier');
                 });
             });
         }
