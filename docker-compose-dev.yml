@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - "./.dev/mongodb:/data/db"
+  order:
+    build:
+      context: .
+      dockerfile: Server.Dockerfile
+    ports:
+      - 2023:2023
+    environment:
+      MONGO_URL: mongodb://mongo/brixel
