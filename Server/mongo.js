@@ -6,7 +6,7 @@ import { MongoClient, ObjectId } from "mongodb";
 const router = express.Router();
 
 // Connection URI to your MongoDB database
-const uri = `mongodb://${process.env.IP}/brixel`;
+const uri = process.env.MONGO_URL ?? "mongodb://127.0.0.1/brixel";
 
 // route to fetch all consumable items from MongoDB
 router.get("/Consumables", async (req, res) => {
